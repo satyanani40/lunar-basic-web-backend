@@ -1,0 +1,34 @@
+{% extends 'home.html' %}
+{% load set_var %}
+{% block body %}
+        {{ f_status }}
+        {{ user_details.username }}
+        <a href="/theweber.in/home">home</a>
+    {% if user.is_authenticated %}
+        {% if f_status == "selectedmyself" %}
+            <form action="" method="post" name="updateinfo" id="updateinfo">
+                {%csrf_token%}
+                <input type="text" value="{{user_details.username}}" name="username" id="username">
+                <input type="text" value="{{user_details.id}}" name="userid" id="userid">
+                <input type="submit" value="update info">
+            </form>
+            <div id="updatestatus"></div>
+        {% elif f_status == "addfriend" or f_status == "rejected" %}
+            <form name="addnewfriend" id="addnewfriend" action="/theweber.in/addfriend" method="post">
+                {% csrf_token %}
+                <div>{{ user_details.username }}</div>
+                <input type="hidden" value="{{selid}}" id="addfriendid" name="addfriendid">
+                <input type="submit" value="addfriend" id="addfriend" name="addfriend">
+            </form>
+        {% elif f_status == "hasbeensent" or f_status == "friends" or f_status == "alredysent" %}
+            <form action="/theweber.in/rejectfriend" method="post" id="rejectfriendform" name="rejectfriendform">
+                {% csrf_token %}
+                <div>{{ user_details.username }}</div>
+                <input type="hidden" value="{{selid}}" id="rejectfriendid" name="rejectfriendid">
+                <input type="submit" value="cancel or unfriend" id="cancelfriend" name="cancelfriend">
+            </form>
+        {% else %}
+        {% endif %}
+    {% endif %}
+ {% endblock %}
+

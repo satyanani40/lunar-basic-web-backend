@@ -1,0 +1,361 @@
+{% include 'header.html' %}
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span3">
+            <div class="row-fluid">
+                <div class="span12">
+                    <div class="card">
+                      <ul class="nav nav-list">
+                        <li class="nav-header">your friends Notifications</li>
+                        <li class="">
+                            <a href="#">
+                            <div class="span2">
+                                <img src="veg.jpg" width="46" height="46" alt="" id="notimg"/>
+                            </div>
+                            <div class="span10">
+                                Surya Muppalla commented on your photo
+                            </div>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="#">
+                            <div class="span2">
+                                <img src="ashok.jpg" width="46" height="46" alt="" id="notimg"/>
+                            </div>
+                            <div class="span10">
+                                Ashok Gajapathi raju and vegeshna are now friends
+                            </div>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="#">
+                            <div class="span2">
+                                <img src="photo.jpg" width="46" height="46" alt="" id="notimg"/>
+                            </div>
+                            <div class="span10">
+                                ashok bathu gajapathi is your friend right now
+                            </div>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="#">
+                            <div class="span2">
+                                <img src="veg.jpg" width="46" height="46" alt="" id="notimg"/>
+                            </div>
+                            <div class="span10">
+                                Vegeshna satyanarayana commented on your photo
+                            </div>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="#">
+                            <div class="span2">
+                                <img src="surya.jpg" width="46" height="46" alt="" id="notimg"/>
+                            </div>
+                            <div class="span10">
+                                surya mupplla commented on this photo of you
+                            </div>
+                            </a>
+                        </li>
+                      </ul>
+                    </div>
+                </div><!--/span-->
+            </div><!--/row-->
+        </div><!--/span-->
+
+        <div class="span6">
+            <div class="row-fluid">
+                <div class="span4">
+                    <div class="card">
+                        <div class="row-fluid">
+
+                            <div class="span2">
+                            </div>
+                            <div class="span8">
+                                <img src="ashok.jpg" alt="" id="profileimg" />
+                            </div>
+                            <div class="span2">
+
+                            </div>
+                        </div>
+                        <div class="row-fluid">  
+                              <div class="span2">
+
+                              </div>                    
+                              <div class="span10">
+                                  <a href=""><h3>{{ username }}</h3></a>
+                              </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="span8">
+                    <div class="card">
+                      <form action="" method="POST" name="postupdateform" id="postupdateform">
+                          {% csrf_token %}
+                        <div>
+                            <textarea name="post_text" id="post_text" spellcheck="true" rows="5" cols="10" style="margin-left:6%;" placeholder="post your thought here"></textarea>
+                        </div>  
+                        <div>
+                            <select id="permission_type" name="permission_type">
+                                <option id="public" name="public" value="1">public</option>
+                                <option id="private" name="private" value="2">private</option>
+                                <option id="Friends" name="Friends" value="3">Friends</option>
+                            </select>
+                            <input id="saveForm" class="btn btn-default pull-right" name="saveForm" type="submit" value="post thought" style="margin-right:8%;">
+                        </div>                        
+                      </form>
+                    </div>
+                </div>
+
+            </div>
+            <div id="userpostdiv">
+            {% for user_post in userposts%}
+            <div class="mes"  id='{{user_post.id}}'>
+            <div class="row-fluid">
+                <div class="span12">
+                    <div class="card">
+                        <div class="card-heading image">
+                           <img src="photo.jpg" width="46" height="46" alt=""/>
+                           <div class="card-heading-header" style="border-bottom:1px solid lightgray;">
+                              <h3><strong>{{user_post.username}}  </strong></h3>
+                              Location:
+                                    <span><a href="">Miyapur</a></span>
+                                    <small>&nbsp;&nbsp;&nbsp;date:<span><a href="">{{user_post.publish_date}}</a></span></small>
+                           </div>
+                        </div>
+                        <div class="card-body">
+                           <p>{{ user_post.title}}</p>
+                           <p>
+                              <a  class="btn btn-primary" id="deletepost_{{ user_post.id}}" onclick="return deletepost(this.id)"><strong>Delete Post</strong></a>&nbsp;&nbsp;&nbsp;
+                              <a href="" class="btn btn-success"><strong>Comment</strong>&nbsp;(20)</a>&nbsp;&nbsp;&nbsp;
+                              <a href="" class="btn btn-warning"><strong>Follow Post</strong></a>
+                            </p>
+                        </div>
+                        <div class="card-body">
+                           <strong>Total comments</strong>
+                           <div class="card-heading image">
+                                <img src="photo.jpg" width="46" height="46" alt=""/>
+                                <div class="card-heading-header" style="border-bottom:1px solid lightgray;">
+                                    <h3><strong>{{user_post.username}}  </strong></h3>
+                                    <p>
+                                        Orey waste fellow ga dscijnfcdesmvcijdnfivcdfklmvcidfnvdfmvdfnivdfmvijdfnvidfvm dfijvnidf
+                                        asdkjgasdsadckjgudsa
+                                    </p>
+
+
+                                </div>
+                               <div class="btn-group  pull-right">
+                                          <a class=" dropdown-toggle" data-toggle="dropdown" href="#">
+
+                                          <span class="caret"></span>
+                                          </a>
+                                          <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                                              <li><a tabindex="-1" href="">Delete comment</a></li>
+                                              <li><a tabindex="-1" href="#">Edit comment</a></li>
+
+                                          </ul>
+                                        </div>
+                            </div>
+                            <div class="card-heading image">
+                                <img src="photo.jpg" width="46" height="46" alt=""/>
+                                <div class="card-heading-header" style="border-bottom:1px solid lightgray;">
+                                    <h3><strong>{{user_post.username}}  </strong></h3>
+                                    <p>
+                                        Orey waste fellow ga dscijnfcdesmvcijdnfivcdfklmvcidfnvdfmvdfnivdfmvijdfnvidfvm dfijvnidf
+                                        asdkjgasdsadckjgudsa
+                                    </p>
+
+
+                                </div>
+                               <div class="btn-group  pull-right">
+                                          <a class=" dropdown-toggle" data-toggle="dropdown" href="#">
+
+                                          <span class="caret"></span>
+                                          </a>
+                                          <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                                              <li><a tabindex="-1" href="">Delete comment</a></li>
+                                              <li><a tabindex="-1" href="#">Edit comment</a></li>
+
+                                          </ul>
+                                        </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div><!--/span-->
+            </div><!--/row-->
+            </div>
+            {% endfor %}
+            </div>
+        </div>
+
+
+        <div class="span3" id="chat" style="display:none;">
+          <div class="row-fluid">
+            <div class="span12">
+               <div class="card">
+                    <ul class="nav nav-list">
+                        <li class="nav-header">your friends in online&nbsp;&nbsp;&nbsp;&nbsp;<strong>(50)</strong></li>
+                        <li class="">
+                            <a href="#">
+                            <div class="span2">
+                                <img src="photo.jpg" width="46" height="46" alt="" id="imgset"/>
+                            </div>
+                            <div class="span8">
+                                Surya Muppalla
+                            </div>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="#">
+                            <div class="span2">
+                                <img src="ashok.jpg" width="46" height="46" alt="" id="imgset"/>
+                            </div>
+                            <div class="span8">
+                                Ashok Gajapathi raju
+                            </div>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="#">
+                            <div class="span2">
+                                <img src="photo.jpg" width="46" height="46" alt="" id="imgset"/>
+                            </div>
+                            <div class="span8">
+                                ashok bathu gajapathi
+                            </div>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="#">
+                            <div class="span2">
+                                <img src="veg.jpg" width="46" height="46" alt="" id="imgset"/>
+                            </div>
+                            <div class="span8">
+                                Vegeshna satyanarayana
+                            </div>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="#">
+                            <div class="span2">
+                                <img src="surya.jpg" width="46" height="46" alt="" id="imgset"/>
+                            </div>
+                            <div class="span8">
+                                surya mupplla
+                            </div>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="#">
+                            <div class="span2">
+                                <img src="ashok.jpg" width="46" height="46" alt="" id="imgset"/>
+                            </div>
+                            <div class="span8">
+                                ashok bathu gajapathi
+                            </div>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="#">
+                            <div class="span2">
+                                <img src="photo.jpg" width="46" height="46" alt="" id="imgset"/>
+                            </div>
+                            <div class="span8">
+                                surya muppalla
+                            </div>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="#">
+                            <div class="span2">
+                                <img src="veg.jpg" width="46" height="46" alt="" id="imgset"/>
+                            </div>
+                            <div class="span8">
+                                satya narayana
+                            </div>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="#">
+                            <div class="span2">
+                                <img src="ashok.jpg" width="46" height="46" alt="" id="imgset"/>
+                            </div>
+                            <div class="span8">
+                                ashok bathu gajapathi
+                            </div>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="#">
+                            <div class="span2">
+                                <img src="surya.jpg" width="46" height="46" alt="" id="imgset"/>
+                            </div>
+                            <div class="span8">
+                                surya muppalla
+                            </div>
+                            </a>
+                        </li>
+                    </ul>
+               </div>
+            </div><!--/span-->
+          </div><!--/row-->
+        </div><!--/span-->
+
+        <div class="span3" id="notifications">
+          <div class="row-fluid">
+                <div class="span12">
+                    <div class="card">
+                      <ul class="nav nav-list">
+                        <li class="nav-header">Your Notifications&nbsp;&nbsp;&nbsp;&nbsp;<strong>(20)</strong></li>
+                        <li class="">
+                            <a href="#">
+                            <div class="span12">
+                               >>&nbsp; websoc software tech commented on you
+                            </div>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="#">
+                            <div class="span12">
+                               >>&nbsp; satya narayana is going to movie
+                            </div>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="#">
+                            <div class="span12">
+                               >>&nbsp; ashok bathu gajapathi commented on your photo
+                            </div>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="#">
+                            <div class="span12">
+                                >>&nbsp;surya muppalla going to bengalore
+                            </div>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="#">
+                            <div class="span12">
+                                >>&nbsp;satya narayana going to movie
+                            </div>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="#">
+                            <div class="span12">
+                                >>&nbsp;ashok bathu gajapathi commented on photo of you
+                            </div>
+                            </a>
+                        </li>
+                      </ul> 
+                    </div>
+                </div><!--/span-->
+            </div><!--/row-->
+        </div><!--/span-->
+    </div><!--/.fluid-container-->
+</body>
+</html>

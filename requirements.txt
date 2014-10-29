@@ -1,0 +1,10 @@
+django==1.6.5
+gunicorn
+djangular
+mongoengine
+django_sse
+redis
+sse
+gevent-socketio
+greenlet
+gevent 

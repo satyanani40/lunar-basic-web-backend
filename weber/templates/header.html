@@ -1,0 +1,19 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <title>Weber Home</title>
+   </head>
+   <body>
+    {% csrf_token %}
+    <div  ng-controller="searchfriend_cntrl" ng-model="names_list">
+        <input type="text" ng-keyup="keyup()" ng-model="search_text_box">
+        <div ng-repeat="temp_names in names_list">
+            <a  ng-href="/theweber.in/profile/[[ temp_names.username ]]/">[[ temp_names.username ]]</a>
+        </div>
+    </div>
+    <div id="search-results"></div>
+
+
+

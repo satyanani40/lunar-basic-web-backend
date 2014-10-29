@@ -1,0 +1,7 @@
+{% include 'header.html' %}
+        <form action="/theweber.in/savepost" name="savepsot" id="savepost" method="post">
+            {% csrf_token %}
+            <input type="text" name="postname" id="postname">
+            <input type="submit" value="save">
+        </form>
+{{ e }}

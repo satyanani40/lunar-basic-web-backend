@@ -1,0 +1,429 @@
+{% include 'header.html' %}
+
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span3">
+                    <div class="card">
+                        <div class="row-fluid">
+
+                            <div class="span1">
+                            </div>
+                            <div class="span5">
+                                <img src="veg.jpg" alt="" id="profileimg" />
+                            </div>
+                            <div class="span1">
+                            </div>
+                            <div class="span5">
+                                {% if user.is_authenticated %}
+                                    {% if f_status == "selectedmyself" %}
+                                        <form action="/theweber.in/updateinfo" method="post" name="updateinfo" id="updateinfo">
+                                            {%csrf_token%}
+                                            <p><input type="submit" value="update info" class="btn btn-success"></p>
+
+                                            <p>
+                                                <a class="fileUpload btn btn-warning">
+                                                    <strong>Change Profile</strong>
+                                                    <input type="file" class="upload" />
+                                                </a>
+                                            </p>
+                                        </form>
+                                        <div id="updatestatus"></div>
+                                    {% elif f_status == "addfriend" or f_status == "rejected" %}
+                                        <form name="addnewfriend" id="addnewfriend" action="/theweber.in/addfriend" method="post">
+                                            {% csrf_token %}
+                                            <input type="hidden" value="{{selid}}" id="addfriendid" name="addfriendid">
+                                            <input type="submit" value="addfriend" id="addfriend" name="addfriend" class="btn btn-success">
+                                        </form>
+                                    {% elif f_status == "hasbeensent" or f_status == "friends" or f_status == "alredysent" %}
+                                        <form action="/theweber.in/rejectfriend" method="post" id="rejectfriendform" name="rejectfriendform">
+                                            {% csrf_token %}
+                                            <input type="hidden" value="{{selid}}" id="rejectfriendid" name="rejectfriendid">
+                                            <input type="submit" value="unfriend" id="cancelfriend" name="cancelfriend" class="btn btn-success">
+                                        </form>
+                                    {% else %}
+                                    {% endif %}
+                                {% endif %}
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                      <ul class="nav nav-list">
+                        <li class="nav-header">About [&nbsp;<strong style="color:red;">{{ user_details.username }}&nbsp;</strong> ]</li>
+                        <li class="">
+                            <a href="#">
+                            <div class="span12">
+                                <strong>Name:</strong>&nbsp;&nbsp;&nbsp;{{ user_details.username }}
+                            </div>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="#">
+                            <div class="span12">
+                               <strong>Relationship:</strong>&nbsp;&nbsp;&nbsp;Married
+                            </div>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="#">
+                            <div class="span12">
+                                <strong>Comapany:</strong>&nbsp;&nbsp;&nbsp;Websoc software
+                            </div>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="#">
+                            <div class="span12">
+                                <strong>Occupation:</strong>&nbsp;&nbsp;&nbsp;CEO Of Websoc Inc..
+                            </div>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="#">
+                            <div class="span12">
+                                <strong>Email:</strong>&nbsp;&nbsp;&nbsp;so1ashok@theweber.in
+                            </div>
+                            </a>
+                        </li>
+                      </ul> 
+                    </div>
+
+
+                    <div class="card">
+                        <div class="row-fluid">
+                            <div class="span12">
+                                <ul class="nav nav-list">
+
+
+                                 {% if friends_details %}
+                                    <li class="nav-header">
+                                        {% if user_details.username == user.username %}
+                                        your
+                                        {% else %}
+                                        {{user_details.username}}
+                                        {% endif %}
+                                        Total friends&nbsp;&nbsp;&nbsp;&nbsp;<strong>({{ friends_details.count}})</strong></li>
+                                 {% for temp in friends_details %}
+                                    <li class="">
+                                      <a href="#">
+                                      <div class="span2">
+                                          <img src="photo.jpg" width="46" height="46" alt="" id="{{ temp.id }}"/>
+                                      </div>
+                                      <div class="span8">
+                                          {{ temp.username}}
+                                      </div>
+                                      </a>
+                                  </li>
+                                 {% endfor %}
+                                 {% else %}
+                                    <li class="nav-header">
+                                        {{ user_details.username }} Total friends&nbsp;&nbsp;&nbsp;&nbsp;<strong>(0)</strong></li>
+                                    <p><strong>Click here to Find nearest Friends to you</strong></p>
+                                 {% endif %}
+
+                              </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="row-fluid">
+                            <div class="span12">
+                                <ul class="nav nav-list">
+                                  <li class="nav-header">Freaquently Matched&nbsp;&nbsp;&nbsp;&nbsp;<strong>(200)</strong></li>
+                                  <li class="">
+                                      <a href="#">
+                                      <div class="span2">
+                                          <img src="photo.jpg" width="46" height="46" alt="" id="showfriend"/>
+                                      </div>
+                                      <div class="span10">
+                                          <strong>Surya Muppalla</strong>&nbsp;&nbsp;matched freaquently
+                                      </div>
+                                      </a>
+                                  </li>
+                                  <li class="">
+                                      <a href="#">
+                                      <div class="span2">
+                                          <img src="ashok.jpg" width="46" height="46" alt="" id="showfriend"/>
+                                      </div>
+                                      <div class="span10">
+                                          <strong>Ashok  raju</strong>&nbsp;&nbsp;matched freaquently
+                                      </div>
+                                      </a>
+                                  </li>
+                                  <li class="">
+                                      <a href="#">
+                                      <div class="span2">
+                                          <img src="photo.jpg" width="46" height="46" alt="" id="showfriend"/>
+                                      </div>
+                                      <div class="span10">
+                                          <strong>ashok bathu </strong>&nbsp;&nbsp;matched freaquently  
+                                      </div>
+                                      </a>
+                                  </li>
+                                  <li class="">
+                                      <a href="#">
+                                      <div class="span2">
+                                          <img src="veg.jpg" width="46" height="46" alt="" id="showfriend"/>
+                                      </div>
+                                      <div class="span10">
+                                          <strong>Vegeshna </strong>&nbsp;&nbsp;matched freaquently 
+                                      </div>
+                                      </a>
+                                  </li>
+                                  <li class="">
+                                      <a href="#" class="btn">
+                                      <div class="span12">
+                                          <strong>See More Matched People>></strong>
+                                      </div>
+                                      </a>
+                                  </li>
+                              </ul>
+                            </div>
+                        </div>
+                    </div>
+
+
+        </div><!--/span-->
+
+        <div class="span6">
+
+            {% for tmp in post_details %}
+           <div class="row-fluid">
+                <div class="span12">
+                    <div class="card">
+                        <div class="card-heading image">
+                           <img src="veg.jpg" width="46" height="46" alt=""/>
+                           <div class="card-heading-header" style="border-bottom:1px solid lightgray;">
+                              <h3><strong>{{ tmp.username }}   </strong></h3>
+                              Location:
+                                    <span><a href="">Miyapur</a></span>
+                                    <small>&nbsp;&nbsp;&nbsp;date:<span><a href="">{{ tmp.publish_date }}</a></span></small>
+                           </div>
+                        </div>
+                        <div class="card-body">
+                           <p>{{ tmp.title }}</p>
+                            <p>
+                              <a href="" class="btn"><strong>Delete Post</strong></a>&nbsp;&nbsp;&nbsp;
+                              <a href="" class="btn"><strong>Write Comment</strong></a>&nbsp;&nbsp;&nbsp;
+                              <a href="" class="btn"><strong>Follow Post</strong></a>
+                            </p>
+                        </div>
+                    </div>
+                </div><!--/span-->
+              </div><!--/row-->
+            {% endfor %}
+
+        </div>
+        <div class="span3" id="chat" style="display:none;">
+          <div class="row-fluid">
+            <div class="span12">
+               <div class="card">
+                    <ul class="nav nav-list">
+                        <li class="nav-header">your friends in online&nbsp;&nbsp;&nbsp;&nbsp;<strong>(50)</strong></li>
+                        <li class="">
+                            <a href="#">
+                            <div class="span2">
+                                <img src="photo.jpg" width="46" height="46" alt="" id="imgset"/>
+                            </div>
+                            <div class="span10">
+                                Surya Muppalla
+                            </div>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="#">
+                            <div class="span2">
+                                <img src="ashok.jpg" width="46" height="46" alt="" id="imgset"/>
+                            </div>
+                            <div class="span10">
+                                Ashok Gajapathi raju
+                            </div>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="#">
+                            <div class="span2">
+                                <img src="photo.jpg" width="46" height="46" alt="" id="imgset"/>
+                            </div>
+                            <div class="span10">
+                                ashok bathu gajapathi
+                            </div>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="#">
+                            <div class="span2">
+                                <img src="veg.jpg" width="46" height="46" alt="" id="imgset"/>
+                            </div>
+                            <div class="span10">
+                                Vegeshna satyanarayana
+                            </div>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="#">
+                            <div class="span2">
+                                <img src="surya.jpg" width="46" height="46" alt="" id="imgset"/>
+                            </div>
+                            <div class="span10">
+                                surya mupplla
+                            </div>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="#">
+                            <div class="span2">
+                                <img src="ashok.jpg" width="46" height="46" alt="" id="imgset"/>
+                            </div>
+                            <div class="span10">
+                                ashok bathu gajapathi
+                            </div>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="#">
+                            <div class="span2">
+                                <img src="photo.jpg" width="46" height="46" alt="" id="imgset"/>
+                            </div>
+                            <div class="span10">
+                                surya muppalla
+                            </div>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="#">
+                            <div class="span2">
+                                <img src="veg.jpg" width="46" height="46" alt="" id="imgset"/>
+                            </div>
+                            <div class="span10">
+                                satya narayana
+                            </div>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="#">
+                            <div class="span2">
+                                <img src="ashok.jpg" width="46" height="46" alt="" id="imgset"/>
+                            </div>
+                            <div class="span10">
+                                ashok bathu gajapathi
+                            </div>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="#">
+                            <div class="span2">
+                                <img src="surya.jpg" width="46" height="46" alt="" id="imgset"/>
+                            </div>
+                            <div class="span10">
+                                surya muppalla
+                            </div>
+                            </a>
+                        </li>
+                    </ul>
+               </div>
+            </div><!--/span-->
+          </div><!--/row-->
+        </div><!--/span-->
+
+        <div class="span3" id="notifications">
+          <div class="row-fluid">
+                <div class="span12">
+                    <div class="card">
+                      <ul class="nav nav-list">
+                        <li class="nav-header">Your Notifications&nbsp;&nbsp;&nbsp;&nbsp;<strong>(15)</strong></li>
+                        <li class="">
+                            <a href="#">
+                            <div class="span12">
+                               >>&nbsp; websoc software tech commented on you
+                            </div>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="#">
+                            <div class="span12">
+                                >>&nbsp;satya narayana is going to movie
+                            </div>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="#">
+                            <div class="span12">
+                                >>&nbsp;ashok bathu gajapathi commented on your photo
+                            </div>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="#">
+                            <div class="span12">
+                               >>&nbsp; surya muppalla going to bengalore
+                            </div>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="#">
+                            <div class="span12">
+                                >>&nbsp;ashok bathu gajapathi commented on your photo
+                            </div>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="#">
+                            <div class="span12">
+                               >>&nbsp; surya muppalla going to bengalore
+                            </div>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="#">
+                            <div class="span12">
+                               >>&nbsp; ashok bathu gajapathi commented on your photo
+                            </div>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="#">
+                            <div class="span12">
+                                >>&nbsp;surya muppalla going to bengalore
+                            </div>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="#">
+                            <div class="span12">
+                                >>&nbsp;ashok bathu gajapathi commented on your photo
+                            </div>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="#">
+                            <div class="span12">
+                              >>&nbsp;  surya muppalla going to bengalore
+                            </div>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="#">
+                            <div class="span12">
+                                >>&nbsp;satya narayana going to movie
+                            </div>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="#">
+                            <div class="span12">
+                               >>&nbsp; ashok bathu gajapathi commented on photo of you
+                            </div>
+                            </a>
+                        </li>
+                      </ul> 
+                    </div>
+                </div><!--/span-->
+            </div><!--/row-->
+        </div><!--/span-->
+    </div><!--/.fluid-container-->
+
+   </body>
+</html>

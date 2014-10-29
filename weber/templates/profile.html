@@ -1,0 +1,43 @@
+<!-- {% include 'header.html' %} -->
+
+        {% load static %}
+        <script src="{% static 'js/angular.min.js' %}"></script>
+        <script src="{% static 'js/ng-upload.js' %}"></script>
+        <script src="{% static 'js/angular-sanitize.js' %}"></script>
+        <script src="{% static 'js/angularjscntrls.js' %}"></script>
+        <!--<script src="{% static 'js/app.js' %}"></script>-->
+        <!--<script src="{% static 'js/profilepage_cntrls.js' %}"></script>--
+        >
+
+
+        <!--- server sent event files -->
+  <script src="{% static 'js/jquery.js' %}"></script>
+  <script>window.jQuery || document.write('<script src="{{ STATIC_URL }}js/libs/jquery-1.7.1.min.js"><\/script>')</script>
+  <script src="{{ STATIC_URL }}js/libs/socket.io.min.js"></script>
+  <script src="{{ STATIC_URL }}js/libs/eventsource.js"></script>
+
+
+
+<!-- header include code -->
+<div ng-controller="header_inc_cntrl" ng-include="template.url">
+
+</div>
+<div ng-controller="friends_notifications_cntrl">
+[[ notifications ]]
+</div>
+<!-- end of header include -->
+
+
+
+
+
+<br/><br/><br/><br/><br/>
+          <div  ng-controller="profile_page_info_cntrl" id="profile_page_cntrl_Id">
+                <div>logged user: {{ user.username }}</div>
+                <div>searched person ::  [[ searched_person ]]</div>
+                <div dynamic="trustedHtml"></div>
+
+          </div>
+
+   </body>
+</html>

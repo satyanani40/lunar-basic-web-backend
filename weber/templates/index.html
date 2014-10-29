@@ -1,0 +1,62 @@
+{% load static %}
+<!-- define angular app -->
+<html ng-app="indexpageapp">
+<head>
+    <title>TheWeber</title>
+    <style>
+        .login{
+                    position: absolute;
+                    left: 7%;
+              }
+
+        .signup{
+            position: absolute;
+            right: 10%;
+            }
+        .fblogin{
+            position: absolute;
+            left: 35%;
+            top: 59%;
+            }
+        .search{
+            position: absolute;
+            left: 33%;
+            top: 48%;
+            }
+        .logo{
+              position: absolute;
+              left: 40%;
+              top: 34%;
+            }
+
+     </style>
+    <script src="{% static 'js/angular.min.js' %}"></script>
+    <script src="{% static 'js/angular-resource.js' %}"></script>
+    <script src="{% static 'js/angular-route.js' %}"></script>
+    <script src="{% static 'js/script.js' %}"></script>
+    <script src="{% static 'js/angularjsapps.js' %}"></script>
+
+
+</head>
+<body ng-controller="indexController">
+<a href='/theweber.in/login' class="login">login</a>
+<a href='/theweber.in/register' class='signup'>signup</a>
+<h1 class="logo">W</h1>
+<div class="search">
+    <div ng-view></div>
+<form action="" method='POST'>
+    <input type="text" name="searchbar" id="searchbar"/>
+    <select id="filters" name="filters">
+        <option value="1" name="public">Public</option>
+        <option value="2" name="private">private</option>
+        <option value="3" name="friends">Friends</option>
+    </select>
+<input type="submit" value="connect" id="connect" name="connect">
+</form>
+ </div>
+<a href="" class="fblogin">invite yourself and yourfriends</a>
+
+
+
+</body>
+</html>

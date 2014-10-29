@@ -1,0 +1,92 @@
+{% load static %}
+<!DOCTYPE html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <title>Weber Home</title>
+
+    <!-- Le styles -->
+      <link href="{% static 'css/google_roboto_font.css' %}" rel='stylesheet' type='text/css'>
+      <link href="{% static 'css/bootplus.css' %}" rel="stylesheet">
+      <link href="{% static 'css/matchme.css' %}" rel="stylesheet">
+      <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+      .hero-unit {
+          padding: 60px;
+      }
+      @media (max-width: 980px) {
+        /* Enable use of floated navbar text */
+        .navbar-text.pull-right {
+          float: none;
+          padding-left: 5px;
+          padding-right: 5px;
+        }
+      }
+      </style>
+      <link href="{% static 'css/bootplus-responsive.css' %}" rel="stylesheet">
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="{% static 'js/jquery.js' %}"></script>
+    <script src="{% static 'js/matchme.js' %}"></script>
+    <script src="{% static 'js/bootstrap.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/homepage.js' %}"></script>
+
+
+   </head>
+
+   <body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="#">TheWeber</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav navbar-text pull-right">
+              <li class="">
+                <a href="#" class="navbar-link" id="just"></a>
+              </li>
+              <li class="active">
+                  <div class="btn-group">
+                      <a class="btn dropdown-toggle btn-danger" data-toggle="dropdown" href="#">
+                      {{ user.username }}
+                      <span class="caret"></span>
+                      </a>
+                      <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                          <li><a tabindex="-1" href="">Goto Profile</a></li>
+                          <li><a tabindex="-1" href="#">Change Settings</a></li>
+                          <li><a tabindex="-1" href="#">Privacy</a></li>
+                          <li class="divider"></li>
+                          <li><a tabindex="-1" href="/theweber.in/logout">Logout</a></li>
+                      </ul>
+                  </div>
+              </li>
+            </ul>
+            <ul class="nav">
+              <li class="active"><a href="/theweber.in/home">Home</a></li>
+              <li><a href="/theweber.in/profile/{{user.username}}/">Goto Profile</a></li>
+              <li><a href="matchme.html">Matchme</a></li>
+              <li><a href="messages.html">Messages</a></li>
+              <li>
+                  {% csrf_token %}
+                  <input type="text" class="searchbox" id="search" placeholder="search Friends in weber" />
+
+                    <ul id="search-results"></ul>
+              </li>
+
+            </ul>
+
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+

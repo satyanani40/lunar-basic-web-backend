@@ -1,0 +1,159 @@
+#imgset
+{
+	min-height: 30px;
+	max-height: 45px;
+	min-width: 30px;
+	max-width: 38px;
+  border-radius: 50%;
+}
+#showfriend
+{
+  min-height: 35px;
+  max-height: 50px;
+  min-width: 25px;
+  max-width: 42px;
+  border-radius: 50%;
+}
+
+#notimg
+{
+  min-height: 30px;
+  max-height: 45px;
+  min-width: 30px;
+  max-width: 38px;
+  border-radius: 50%;
+}
+.searchbox
+{
+  margin-top:3%;min-width:300px;max-width:400px;border: 1px solid lightgray;
+}
+.searchbox:hover
+{
+  border: 1px solid lightcoral;
+}
+
+/*start of the textarea content*/
+
+form header {
+  margin: 0 0 2px 0; 
+}
+form header div {
+  font-size: 90%;
+  color: #999;
+}
+form header h2 {
+  margin: 0 0 5px 0;
+}
+form > div {
+  clear: both;
+  overflow: hidden;
+  padding: 1px;
+  margin: 0 0 10px 0;
+}
+form > div > fieldset > div > div {
+  margin: 0 0 5px 0;
+}
+form > div > label,
+legend {
+	width: 25%;
+  float: left;
+  padding-right: 10px;
+}
+form > div > div,
+form > div > fieldset > div {
+  width: 75%;
+  float: right;
+}
+form > div > fieldset label {
+	font-size: 90%;
+}
+fieldset {
+	border: 0;
+  padding: 0;
+}
+
+input[type=text],
+input[type=email],
+input[type=url],
+input[type=password],
+textarea {
+	width: 83%;
+  border:1px solid lightgray;
+  border-radius: 5px;
+}
+input[type=text],
+input[type=email],
+input[type=url],
+input[type=password] {
+  width: 50%;
+}
+input[type=text]:focus,
+input[type=email]:focus,
+input[type=url]:focus,
+input[type=password]:focus,
+textarea:focus {
+  outline: 0;
+  border-color: #4697e4;
+}
+textarea:hover {
+  outline: 0;
+  border-color: lightcoral;
+}
+
+@media (max-width: 600px) {
+  form > div {
+    margin: 0 0 15px 0; 
+  }
+  form > div > label,
+  legend {
+	  width: 100%;
+    float: none;
+    margin: 0 0 5px 0;
+  }
+  form > div > div,
+  form > div > fieldset > div {
+    width: 100%;
+    float: none;
+  }
+  input[type=text],
+  input[type=email],
+  input[type=url],
+  input[type=password],
+  textarea,
+  select {
+    width: 100%; 
+  }
+}
+@media (min-width: 1200px) {
+  form > div > label,
+	legend {
+  	text-align: right;
+  }
+}
+/*end of the textarea content*/
+
+/*profile image conetent*/
+#profileimg
+{
+    display: inline-block;
+    border-radius: 5%;
+    width: 100%;
+    height: 10em;
+    margin-bottom: 9%;
+}
+.fileUpload {
+  position: relative;
+  overflow: hidden;
+  margin: 0px;
+}
+.fileUpload input.upload {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  padding: 0;
+  font-size: 12px;
+  cursor: pointer;
+  opacity: 0;
+  filter: alpha(opacity=0);
+}
