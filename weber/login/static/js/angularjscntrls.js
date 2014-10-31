@@ -6,7 +6,7 @@ var loginapp = angular.module("loginapp",[]).controller("validationcntrl",functi
         $http.post('/theweber.in/login_check', {username: $scope.username,
                                                 password: $scope.password})
             .success(function(data, status, headers, config) {
-               // console.log(data)
+            console.log(data)
             if(data == 1){
                  window.location.href="/theweber.in/home";
              }else{
@@ -19,42 +19,94 @@ var loginapp = angular.module("loginapp",[]).controller("validationcntrl",functi
           });
     };
 })
-.config(['$httpProvider', function($httpProvider,$interpolateProvider) {
+/*.config(['$httpProvider', function($httpProvider,$interpolateProvider) {
+    $httpProvider.defaults.xsrfCookieName = 'csrftoken';
+    $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
+    $interpolateProvider.startSymbol('[[').endSymbol(']]');
+
+}]);*/
+loginapp.config(function($interpolateProvider,$httpProvider){
+
+    $interpolateProvider.startSymbol('[[').endSymbol(']]');
     $httpProvider.defaults.xsrfCookieName = 'csrftoken';
     $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
 
-}]);
 
-// friends requests
-var friends_notifications = angular.module('friends_notifications', []);
-
-friends_notifications.controller('friends_notifications_cntrl', function($scope,$http) {
-  $scope.notifications = ''
-  var feed = new EventSource('/theweber.in/sse/');
-  var handler = function(event){
-      $scope.$apply(function () {
-          $scope.notifications = JSON.parse(event.data)
-      });
-  }
-
-feed.addEventListener('frnd_notifications', handler, false);
-$http.post('/theweber.in/frnd_notifications')
 });
 
-friends_notifications.config(function($interpolateProvider){
-$interpolateProvider.startSymbol('[[').endSymbol(']]');
-})
+
+
 
 //============include home controllers==============
-var header_include_app = angular.module("header_include_app",['ngSanitize',]).controller("header_inc_cntrl",function($scope,$http,$sce,$compile){
+var header_include_app = angular.module("header_include_app",[]).controller("header_inc_cntrl",function($scope,$http){
     $scope.template = { name:'header.html',url:'/theweber.in/header'}
+
+    //==================dynamic server sent code loading=============
+    if(typeof(EventSource)!=="undefined"){
+        var out = document.getElementById('messages');
+        var source = new EventSource('/theweber.in/sse/');
+
+        function log() {
+            console.log(arguments);
+        }
+        source.onopen = function() {
+            //console.log('connection opend')
+            };
+        source.onerror = function () {
+             //console.log(arguments);
+        };
+        source.onmessage = function() {
+          source.addEventListener('frnd_notifications', function(e) {
+                console.log(data)
+            }, false);
+         };
+
+}else
+   alert('browser does not support server sent events');
+
+source.addEventListener('frnd_notifications', function(e) {
+        data = JSON.parse(e.data);
+        console.log(data['new_frnd_requests'].length)
+        if(data['new_frnd_requests'].length >= 1){
+
+
+
+        }
+
+}, false);
+
+//===========end of server sent events code
+
+// check notifications are occured
+$http.post('/theweber.in/frnd_notifications')
+            .success(function(data, status, headers, config) {
+                console.log(data)
+
+           })
+          .error(function(data, status, headers, config) {
+                console.log(data)
+
+          });
+
+
+
 
 });
 
 
-header_include_app.config(function($interpolateProvider){
-$interpolateProvider.startSymbol('[[').endSymbol(']]');
-})
+header_include_app.directive('dynamic', function ($compile) {
+	  return {
+	    restrict: 'A',
+	    replace: true,
+	    link: function (scope, ele, attrs) {
+	      scope.$watch(attrs.dynamic, function(html) {
+	        ele.html(html);
+	        $compile(ele.contents())(scope);
+	      });
+	    }
+	  };
+	})
+
 
 //==============home function load userposts=================
 var loadposts = angular.module("loadposts",[]).controller("disply_user_posts_cntrl",function($scope,$http){
@@ -232,7 +284,6 @@ $interpolateProvider.startSymbol('[[').endSymbol(']]');
 //==============get about all profile information==================
 
 var profile_page_info = angular.module('profile_page_info', ['ngSanitize',]);
-
 profile_page_info.directive('dynamic', function ($compile) {
 	  return {
 	    restrict: 'A',
@@ -301,13 +352,4 @@ profile_page_info.controller("profile_page_info_cntrl",['$scope','$http','$sce',
 
 
 }])
-
-
-profile_page_info.config(function($interpolateProvider){
-$interpolateProvider.startSymbol('[[').endSymbol(']]');
-})
-
- angular.element(document).ready(function() {
-      angular.bootstrap(document, ['header_include_app','loadposts','searchfriend','new_post_app','myApp','imageuploadapp','profile_page_info','friends_notifications']);
-    });
 

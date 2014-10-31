@@ -40,10 +40,11 @@ def frnd_notifications(request):
     while(1):
         data = check_newnotifications(request.user.id)
         time.sleep(10)
-        #return HttpResponse('hellowwww')
 
 def check_newnotifications(userid):
+    #new friend request came or not
     data = ''
+
     new_frnd_reqsts  = Friends_new.objects(receiver_frnd = userid, status='1')
     new_accept_reqsts= Friends_new.objects(sender_frnd = userid, status='2')
 

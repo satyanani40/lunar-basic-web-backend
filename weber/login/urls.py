@@ -22,4 +22,19 @@ urlpatterns = patterns('',
     #url(r'^home$','login.views.home'),
     #url(r'^logout$','login.views.logout_view'),
 
+    #surya urls
+    url(r'^activate/(?P<email>[\d+\w@\w.\wa-z\wA-Z\w1-9\w:\w;\w_\w=\w{}]+)/$', 'login.views.email_confirmation'),
+    url(r'^confirm_registration', TemplateView.as_view(template_name='confirm_registration.html')),
+    url(r'^forgot_password', TemplateView.as_view(template_name='forgotpassword.html')),
+    url(r'^set_new_password', TemplateView.as_view(template_name='setpassword.html')),
+    url(r'^password_recovery', 'login.views.password_recovery'),
+    url(r'^password_reset_success', 'login.views.password_reset_success'),
+    url(r'^set_password/(?P<password_email>[\d+\w@\w.\wa-z\wA-Z\w1-9\w:\w;\w_\w=\w{}]+)/$', 'login.views.set_password'),
+    url(r'^invite_friends', TemplateView.as_view(template_name='invitefriends.html')),
+    url(r'^send_invitation', 'login.views.send_invitation'),
+
+
+
+
+
 )

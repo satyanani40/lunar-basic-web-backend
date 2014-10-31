@@ -19,24 +19,14 @@
 
 
 <!-- header include code -->
-<div ng-controller="header_inc_cntrl" ng-include="template.url">
-
-</div>
-<div ng-controller="friends_notifications_cntrl">
-[[ notifications ]]
-</div>
+<div ng-controller="header_inc_cntrl" ng-include="template.url"></div>
 <!-- end of header include -->
-
-
-
-
 
 <br/><br/><br/><br/><br/>
           <div  ng-controller="profile_page_info_cntrl" id="profile_page_cntrl_Id">
                 <div>logged user: {{ user.username }}</div>
                 <div>searched person ::  [[ searched_person ]]</div>
                 <div dynamic="trustedHtml"></div>
-
           </div>
 
    </body>
