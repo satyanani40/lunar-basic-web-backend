@@ -321,6 +321,13 @@ profile_page_info.controller("profile_page_info_cntrl",['$scope','$http','$sce',
         }else{
             $scope.trustedHtml =  $sce.trustAsHtml('<b>something went wrong</b>');
         }
+        $scope.change_password = function(){
+        $scope.trustedHtml = $sce.trustAsHtml('<form ng-submit="update_info1()" method="post">'+
+        '<input type="text"  ng-model="password">' +
+        '<input type="text"  ng-model="confirmpassword">'+
+        '<input type="submit" value="update"></form>');
+
+        }
         $scope.add_friend = function(){
             if(selected_id !="" || selected_id != undefined){
                     $http.post('/theweber.in/addfriend', { addfriendid : selected_id })
@@ -334,6 +341,19 @@ profile_page_info.controller("profile_page_info_cntrl",['$scope','$http','$sce',
                 alert("please select one friend to add")
             }
         }
+        $scope.update_info1 = function(){
+            if ($scope.password == $scope.confirmpassword){
+                $http.post('/theweber.in/change_password', { password : $scope.password })
+                .success(function(data,status,headers,config){
+                    console.log(data)
+
+
+                    })
+            }else{
+            alert("password doen't match")
+            }
+
+           }
 
         $scope.cancel_request = function(){
             $http.post('/theweber.in/cancel_request', { cancelid : selected_id })

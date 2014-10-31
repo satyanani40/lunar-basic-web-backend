@@ -19,12 +19,36 @@ from django.core.mail import EmailMultiAlternatives
 from django.contrib.auth.hashers import check_password, make_password
 from django.views.generic import TemplateView
 
+
+#@login_required(login_url='/theweber.in/login')
+class invite_friendsview(TemplateView):
+    template_name='invitefriends.html'
+
 def send_invitation(request):
     if request.method == 'POST':
-        email = request.POST['email']
-        email1 = request.POST['email1']
-        email2 = request.POST['email2']
-        email_user = request.user.email
+        subject = "invitation from your friend"+request.user.username+" to weber login"
+        text_content = ''
+        from_email = request.user.email
+        html_content = '<h1 style="color:green;font-family:cursive, sans-serif;font-size: 25px;font-weight: bold;">' \
+                       'This Is From Websoc Team</h1><br>' \
+                       ' you are requested to register<br>' \
+                       '<h4>if you are interested  please click on the link</h4>' \
+                       '127.0.0.1:8000/theweber.in/register'
+
+        to = request.POST['email1']
+        send_email(subject,to,text_content,from_email,html_content)
+
+
+        to = request.POST['email2']
+        send_email(subject,to,text_content,from_email,html_content)
+
+        to = request.POST['email3']
+        send_email(subject,to,text_content,from_email,html_content)
+
+    return HttpResponse(1)
+
+
+
 
 def password_reset_success(request):
     status = 0
@@ -46,6 +70,16 @@ def set_password(request,password_email):
     else:
         return HttpResponse('something went wrong')
 
+def send_email(subject,to,text_content=None, from_email=None,  html_content=None):
+    msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+    msg.attach_alternative(html_content, "text/html")
+    if msg.send():
+        status = 1
+    else:
+        status = 0
+        #email = EmailMessage('websoc password recovery',ss,to=[user_email])
+        #email.send()
+    return HttpResponse(status)
 
 def password_recovery(request):
     if request.method == 'POST':
@@ -65,15 +99,9 @@ def password_recovery(request):
                        ' you are requested to change the password<br>' \
                        '<h4>if you are interested to change it please click on the link</h4>' \
                        '127.0.0.1:8000/theweber.in/set_password/'+encoded_content
-        msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
-        msg.attach_alternative(html_content, "text/html")
-        if msg.send():
-            status = 1
-        else:
-            status = 0
-        #email = EmailMessage('websoc password recovery',ss,to=[user_email])
-        #email.send()
-        return HttpResponse(status)
+        result = send_email(subject,to,text_content,from_email,html_content)
+        return HttpResponse(result)
+
 
 
 

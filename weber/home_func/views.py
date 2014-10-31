@@ -23,6 +23,7 @@ from django.core import serializers
 from django.core.serializers.json import DjangoJSONEncoder
 from django.views.decorators.csrf import csrf_exempt
 from myapp.views import *
+from django.contrib.auth.hashers import make_password,check_password
 
 from models import *
 from forms import  DocumentForm
@@ -296,9 +297,39 @@ def accept_friend(request):
                 done_accept = 1
     return done_accept
 
+def change_password(request):
+    if request.method=='POST':
+        status = 0
+        requested_data = json.loads(request.body)
+        enc_pass = make_password(requested_data['password'])
+        rs = User.objects(id=request.user.id).update(set__password=enc_pass)
+        if rs:
+            status = 1
+        return HttpResponse(status)
+
+def change_gender(request):
+    if request.method=='POST':
+        status = 0
+        requested_data = json.loads(request.body)
+        rs = User.objects(id=request.user.id).update(set__gender=requested_data['gender'])
+        if rs:
+            status = 1
+        return HttpResponse(status)
+
+
+
+def update_birthdate(request):
+    if request.method=="POST":
+        requested_data = json.loads(request.body)
+        rs = User.objects(id=request.user.id).update(set__birth_date=datetime.datetime(requested_data['year'],
+                                                                                       requested_data['month'],
+                                                                                       requested_data['day']))
+        if rs:
+            status = 1
+        return HttpResponse(status)
+
 
 #==========new editing upto this mark
-"""
 def get_selected_user_info(request,username):
     f_status = 'addfriend'
     user_details = User.objects.get(username=username)
@@ -398,4 +429,3 @@ def upload_profile_pic(request):
 
     except Exception as e:
         return HttpResponse(e)
-"""""

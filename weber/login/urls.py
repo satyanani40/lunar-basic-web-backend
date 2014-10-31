@@ -1,9 +1,9 @@
 from django.conf.urls import patterns, include, url
-
+from django.contrib.auth.decorators import login_required
 from django.contrib import admin
 admin.autodiscover()
 from django.views.generic import TemplateView
-
+from views import invite_friendsview
 urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'weber.views.home', name='home'),
@@ -31,7 +31,7 @@ urlpatterns = patterns('',
     url(r'^password_recovery', 'login.views.password_recovery'),
     url(r'^password_reset_success', 'login.views.password_reset_success'),
     url(r'^set_password/(?P<password_email>[\d+\w@\w.\wa-z\wA-Z\w1-9\w:\w;\w_\w=\w{}]+)/$', 'login.views.set_password'),
-    url(r'^invite_friends', TemplateView.as_view(template_name='invitefriends.html')),
+    url(r'^invite_friends',login_required(invite_friendsview.as_view())),
     url(r'^send_invitation', 'login.views.send_invitation'),
 
 
