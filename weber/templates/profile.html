@@ -2,6 +2,7 @@
 
         {% load static %}
         <script src="{% static 'js/angular.min.js' %}"></script>
+        <script src="{% static 'js/jquery.js' %}"></script>
         <script src="{% static 'js/ng-upload.js' %}"></script>
         <script src="{% static 'js/angular-sanitize.js' %}"></script>
         <script src="{% static 'js/angularjscntrls.js' %}"></script>
@@ -19,15 +20,24 @@
 
 
 <!-- header include code -->
-<div ng-controller="header_inc_cntrl" ng-include="template.url"></div>
+<div ng-controller="header_inc_cntrl" ng-include="template.url">  </div>
+
+[[ hellow ]]
 <!-- end of header include -->
 
 <br/><br/><br/><br/><br/>
           <div  ng-controller="profile_page_info_cntrl" id="profile_page_cntrl_Id">
                 <div>logged user: {{ user.username }}</div>
                 <div>searched person ::  [[ searched_person ]]</div>
-                <div dynamic="trustedHtml"></div>
+              <div id="frnd_request_info">
+               <div dynamic="trustedHtml"></div>
           </div>
+
+        <div ng-repeat="temp in new_requests">
+            [[temp]]
+
+        </div>
+        </div>
 
    </body>
 </html>

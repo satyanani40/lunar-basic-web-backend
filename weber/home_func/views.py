@@ -30,6 +30,9 @@ from forms import  DocumentForm
 import datetime
 import time
 
+intial_time =  time.mktime(datetime.datetime(1990, 1, 1, 1, 1,1,1).timetuple())
+intial_time2 =  time.mktime(datetime.datetime(1990, 1, 1, 1, 1,1,1).timetuple())
+
 class SSE(RedisQueueView):
     def get_redis_channel(self):
        return "sse_%s" % self.request.user.id
@@ -37,24 +40,33 @@ class SSE(RedisQueueView):
 #check friends request and notifications
 
 def frnd_notifications(request):
+    global intial_time
+    global intial_time2
+    intial_time=  time.mktime(datetime.datetime(1990, 1, 1, 1, 1,1,1).timetuple())
+    intial_time2 =  time.mktime(datetime.datetime(1990, 1, 1, 1, 1,1,1).timetuple())
+
     while(1):
-        data = check_newnotifications(request.user.id)
+        data = check_newnotifications(request.user.id, intial_time, intial_time2)
         time.sleep(10)
 
-def check_newnotifications(userid):
+def check_newnotifications(userid, it1, it2):
     #new friend request came or not
-    data = ''
 
-    new_frnd_reqsts  = Friends_new.objects(receiver_frnd = userid, status='1')
-    new_accept_reqsts= Friends_new.objects(sender_frnd = userid, status='2')
+    new_frnd_reqsts  = Friends_new.objects(receiver_frnd = userid, status='1', request_time__gt= it1).order_by('request_time','-request_time')
+    new_accept_reqsts= Friends_new.objects(sender_frnd = userid, status='2', request_time__gt= it2).order_by('request_time','-request_time')
 
 
     if new_frnd_reqsts:
+        global intial_time
+        intial_time = new_frnd_reqsts[0].request_time
         serialize_data1 = Friends_newSerializer(new_frnd_reqsts)
         data = json.dumps({'new_frnd_requests': serialize_data1.data}, cls= DjangoJSONEncoder)
         send_event("frnd_notifications",data, 'sse_%s' % userid)
 
+
     elif new_accept_reqsts:
+        global inital_time2
+        inital_time2 = new_accept_reqsts[0].request_time
         serialize_data2 = Friends_newSerializer(new_accept_reqst)
         data = json.dumps({'new_accept_notifications': serialize_data2.data}, cls= DjangoJSONEncoder)
         send_event("frnd_notifications",data, 'sse_%s' % userid)
@@ -236,12 +248,15 @@ def add_friend(request):
 
 def add_newfriend(friend1, friend2):
     status = 0
-    new_friend = Friends_new.objects.create(sender_frnd= friend1, receiver_frnd= friend2,status='1')
+    new_friend = Friends_new.objects.create(sender_frnd=friend1,
+                                            receiver_frnd= friend2,status='1',
+                                            request_date=datetime.datetime.now,
+                                            request_time=time.mktime((datetime.datetime.now()).timetuple()))
     if new_friend:
         status =  1
 
     return status
-
+@csrf_exempt
 def cancelrequest(request):
     status = 0
     if request.method=='POST':
@@ -264,9 +279,26 @@ def del_document(friend1, friend2):
         d[0].delete()
         status = 1
     return status
+@csrf_exempt
+
+def accept_friend(request):
+    done_accept = 0
+    if request.method == "POST":
+        sender_id = request.POST['senderid']
+        status = is_alredysent(request.user.id,sender_id)
+        if status:
+            rs = Friends_new.objects.filter(sender_frnd=sender_id).update(
+                set__status='2',
+                set__request_date=datetime.datetime.now,
+                set__request_time=time.mktime((datetime.datetime.now()).timetuple())
+                )
+            if rs:
+                done_accept = 1
+    return done_accept
+
 
 #==========new editing upto this mark
-
+"""
 def get_selected_user_info(request,username):
     f_status = 'addfriend'
     user_details = User.objects.get(username=username)
@@ -366,3 +398,4 @@ def upload_profile_pic(request):
 
     except Exception as e:
         return HttpResponse(e)
+"""""

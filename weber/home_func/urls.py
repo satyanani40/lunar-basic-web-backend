@@ -24,5 +24,6 @@ urlpatterns = patterns('',
     url(r'^savepost','home_func.views.savepost'),
     url(r'^upload_profile_pic','home_func.views.upload_profile_pic'),
     url(r'^frnd_notifications','home_func.views.frnd_notifications'),
+    url(r'^accept_friend','home_func.views.accept_friend'),
 
 )

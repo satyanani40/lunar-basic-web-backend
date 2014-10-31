@@ -6,7 +6,7 @@ var loginapp = angular.module("loginapp",[]).controller("validationcntrl",functi
         $http.post('/theweber.in/login_check', {username: $scope.username,
                                                 password: $scope.password})
             .success(function(data, status, headers, config) {
-            console.log(data)
+               // console.log(data)
             if(data == 1){
                  window.location.href="/theweber.in/home";
              }else{
@@ -19,25 +19,27 @@ var loginapp = angular.module("loginapp",[]).controller("validationcntrl",functi
           });
     };
 })
-/*.config(['$httpProvider', function($httpProvider,$interpolateProvider) {
-    $httpProvider.defaults.xsrfCookieName = 'csrftoken';
-    $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
-    $interpolateProvider.startSymbol('[[').endSymbol(']]');
-
-}]);*/
-loginapp.config(function($interpolateProvider,$httpProvider){
-
-    $interpolateProvider.startSymbol('[[').endSymbol(']]');
+.config(['$httpProvider', function($httpProvider,$interpolateProvider) {
     $httpProvider.defaults.xsrfCookieName = 'csrftoken';
     $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
 
+}]);
 
+
+//============include home controllers==============
+function accept_friend(accept_id,sender_id){
+alert(accept_id+"=="+sender_id)
+$.ajax({
+  url: "/theweber.in/accept_friend",
+  data: {'senderid':sender_id},
+  method: 'post',
+}).done(function(data) {
+  console.log(data)
 });
 
 
 
-
-//============include home controllers==============
+}
 var header_include_app = angular.module("header_include_app",[]).controller("header_inc_cntrl",function($scope,$http){
     $scope.template = { name:'header.html',url:'/theweber.in/header'}
 
@@ -65,14 +67,17 @@ var header_include_app = angular.module("header_include_app",[]).controller("hea
    alert('browser does not support server sent events');
 
 source.addEventListener('frnd_notifications', function(e) {
+var message = '';
         data = JSON.parse(e.data);
-        console.log(data['new_frnd_requests'].length)
+        //console.log(data)
         if(data['new_frnd_requests'].length >= 1){
-
-
-
+            for(var i = 0; i<data['new_frnd_requests'].length;i++){
+            $scope.hellow = "dddddddddddddddddddddd"
+            console.log((data['new_frnd_requests'][i]).sender_frnd.id+"===========")
+        message = message+'<input type="button" onclick="accept_friend(\''+(data['new_frnd_requests'][i]).id+'\',\''+(data['new_frnd_requests'][i]).sender_frnd.id+'\')" value="accept friend">';
         }
-
+        }
+        document.getElementById("frnd_request_info").innerHTML = message;
 }, false);
 
 //===========end of server sent events code
@@ -81,16 +86,11 @@ source.addEventListener('frnd_notifications', function(e) {
 $http.post('/theweber.in/frnd_notifications')
             .success(function(data, status, headers, config) {
                 console.log(data)
-
            })
           .error(function(data, status, headers, config) {
                 console.log(data)
 
           });
-
-
-
-
 });
 
 
@@ -313,7 +313,7 @@ profile_page_info.controller("profile_page_info_cntrl",['$scope','$http','$sce',
         if(data['friendstatus'] == 'ownaccount'){
             $scope.trustedHtml =  $sce.trustAsHtml('<button ng-click="update_info()">update info</button>');
         }else if(data['friendstatus'] == 'friends'){
-            $scope.trustedHtml =  $sce.trustAsHtml('<button ng-click="unfriend()">unfriend</button>');
+            $scope.trustedHtml =  $sce.trustAsHtml('<button ng-click="cancel_request()">unfriend</button>');
         }else if(data['friendstatus'] == 'alredysent'){
             $scope.trustedHtml = $sce.trustAsHtml('<button ng-click="cancel_request()">cancel request</button>');
         }else if(data['friendstatus'] == 'addfriend'){
@@ -353,3 +353,7 @@ profile_page_info.controller("profile_page_info_cntrl",['$scope','$http','$sce',
 
 }])
 
+
+ angular.element(document).ready(function() {
+      angular.bootstrap(document, ['header_include_app','loadposts','searchfriend','new_post_app','myApp','imageuploadapp','profile_page_info']);
+    });

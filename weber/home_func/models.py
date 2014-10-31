@@ -45,6 +45,7 @@ class Friends_new(Document):
     receiver_frnd = ReferenceField(User)
     status = StringField()
     request_date = DateTimeField()
-    unseen = BooleanField()
+    request_time = IntField()
+    unseen = BooleanField(default=False)
 
 
