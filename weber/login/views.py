@@ -19,9 +19,6 @@ from django.core.mail import EmailMultiAlternatives
 from django.contrib.auth.hashers import check_password, make_password
 from django.views.generic import TemplateView
 
-
-
-
 def send_invitation(request):
     if request.method == 'POST':
         email = request.POST['email']
@@ -88,31 +85,38 @@ def email_confirmation(request,email):
     return HttpResponseRedirect('/theweber.in/login')
 
 
-def register(request):
+def doregister(request):
+    status = ''
     if request.method == 'POST':
         username = request.POST['username']  #request_data['username']
         password = request.POST['password']  #request_data['email']
         email = request.POST['email']       #request_data['email']
-        User_save = User.create_user(username=username,email=email,password=password)
-        User_save.save()
 
-        user_email = User_save.email
-        encoded_content = '\r\n'.join(textwrap.wrap(user_email.encode('base64'), 76))
-        ss = '127.0.0.1:8000/theweber.in/activate/'+encoded_content
-        subject, from_email, to = 'Websoc activation link', email, user_email
-        text_content = 'This is an important message.'
-        html_content = '<h1 style="color:green;font-family:cursive, sans-serif;font-size: 25px;font-weight: bold;">' \
+        useravaible = is_useravaible(username)
+        user_email = is_emailalredyexits(email)
+
+        if not useravaible and not user_email:
+            User_save = User.create_user(username=username,email=email,password=password)
+            User_save.is_active = False
+            User_save.save()
+
+            user_email = User_save.email
+            encoded_content = '\r\n'.join(textwrap.wrap(user_email.encode('base64'), 76))
+            ss = '127.0.0.1:8000/theweber.in/activate/'+encoded_content
+            subject, from_email, to = 'Websoc activation link', email, user_email
+            text_content = 'This is an important message.'
+            html_content = '<h1 style="color:green;font-family:cursive, sans-serif;font-size: 25px;font-weight: bold;">' \
                        'This Is From Websoc Team</h1><br>' \
                        ' you are requested to change the password<br>' \
                        '<h4>if you are interested to change it please click on the link</h4>' \
                        '127.0.0.1:8000/theweber.in/activate/'+encoded_content
-        msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
-        msg.attach_alternative(html_content, "text/html")
-        msg.send()
-        return HttpResponse('a link  has been sent to your '+user_email+' please click on the link')
-
-    else:
-        return render(request,'register.html')
+            msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+            msg.attach_alternative(html_content, "text/html")
+            msg.send()
+            status = ('a link  has been sent to your '+user_email+' please click on the link')
+        else:
+            status = ('email or username alredy exits')
+    return HttpResponse(status)
 
 @login_required(login_url='/theweber.in/login')
 def home(request):
@@ -149,6 +153,17 @@ def is_useravaible(username):
     except Exception as e:
         status = 0
     return status
+
+def is_emailalredyexits(email):
+    status = 0
+    try:
+        if username:
+            User.objects.get(email=email)
+            status = 1
+    except Exception as e:
+        status = 0
+    return status
+
 
 
 
