@@ -25,6 +25,9 @@ urlpatterns = patterns('',
     url(r'^upload_profile_pic','home_func.views.upload_profile_pic'),
     url(r'^frnd_notifications','home_func.views.frnd_notifications'),
     url(r'^accept_friend','home_func.views.accept_friend'),
-    url(r'^change_password','home_func.views.change_password')
+    url(r'^change_password','home_func.views.change_password'),
+    url(r'^block_person','home_func.views.block_selected_person'),
+    url(r'^unblock_person','home_func.views.unblock_selected_person'),
+
 
 )

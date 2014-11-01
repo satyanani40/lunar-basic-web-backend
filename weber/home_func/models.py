@@ -49,3 +49,8 @@ class Friends_new(Document):
     unseen = BooleanField(default=False)
 
 
+class Blocked_persons(Document):
+    blocked_by = ReferenceField(User)
+    blocker = ReferenceField(User)
+    status = IntField()
+

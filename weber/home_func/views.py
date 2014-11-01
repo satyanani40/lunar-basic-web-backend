@@ -145,17 +145,76 @@ def get_profile_info(request,username):
                         'friends':friends_list}, cls = DjangoJSONEncoder)
 
     elif(details['id'] != str(request.user.id)):
-            friend_status = get_friend_status(request.user.id,details['id'])
-            data =  json.dumps({'basicinfo':details,
+
+            canblock_status = ''
+            check_blocked = is_blocked(details['id'],request.user.id)
+            check_canblock = canblock_person(details['id'],request.user.id)
+
+            if check_canblock:
+                canblock_status = 'canunblock'
+            else:
+                canblock_status = 'canblock'
+
+            if not check_blocked:
+                friend_status = get_friend_status(request.user.id,details['id'])
+                data =  json.dumps({'basicinfo':details,
                         'userposts':userposts,
                         'friendstatus':friend_status,
-                        'friends':friends_list
+                        'friends':friends_list,
+                        'canblock_status':canblock_status
                                }, cls = DjangoJSONEncoder)
+            else:
+                friend_status = 'blocked';
+                data = json.dumps({'basicinfo':details,'friendstatus':friend_status,'canblock_status':canblock_status}, cls= DjangoJSONEncoder)
     else:
         data = ""
     return HttpResponse(data)
 
+
+def block_selected_person(request):
+    status = 0
+    if request.method=='POST':
+        post_data = json.loads(request.body)
+        if not canblock_person(post_data['block_personid'],request.user.id):
+            Blocked_persons.objects.create(blocked_by=request.user.id, blocker=post_data['block_personid'],status=1)
+            status = 1
+    return HttpResponse(status)
+
+def unblock_selected_person(request):
+    status = 0
+    if request.method=='POST':
+        post_data = json.loads(request.body)
+        if canblock_person(post_data['block_personid'],request.user.id):
+            d = Blocked_persons.objects(blocked_by=request.user.id, blocker=post_data['block_personid'],status=1)
+            if d:
+                d[0].delete()
+                status = 1
+    return HttpResponse(status)
+
+
+def canblock_person(blocker,blocked_by):
+    status = 0
+    if blocked_by is not None and blocker is not None:
+        rs_data = Blocked_persons.objects(blocked_by=blocked_by, blocker=blocker,status=1)
+        if rs_data:
+            status =1
+        else:
+            status = 0
+    return status
+
+
     #return HttpResponse(serialize_data.data)
+def is_blocked(blocked_by,blocked_person_id):
+    status = 0
+    if blocked_by is not None and blocked_person_id is not None:
+        rs_data = Blocked_persons.objects(blocked_by=blocked_by, blocker=blocked_person_id)
+        if rs_data:
+            status = 1
+        else:
+            status = 0
+    return status
+
+
 def get_userfriends(user_id):
     friends = Friends_new.objects(
             (

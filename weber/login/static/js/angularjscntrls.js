@@ -310,7 +310,20 @@ profile_page_info.controller("profile_page_info_cntrl",['$scope','$http','$sce',
     console.log(data['friendstatus'])
         $scope.searched_person = data['basicinfo'].username
         selected_id = data['basicinfo'].id;
-        if(data['friendstatus'] == 'ownaccount'){
+
+        if(data['canblock_status'] == 'canblock'){
+            $scope.trustedHtml1 =  $sce.trustAsHtml('<button ng-click="block_person()">block selected friend</button>');
+        }
+        else if(data['canblock_status'] == 'canunblock'){
+         $scope.trustedHtml1 =  $sce.trustAsHtml('<button ng-click="unblock_person()">unblock selected friend</button>');
+        }else{
+        $scope.trustedHtml1 =  $sce.trustAsHtml('something went wrong');
+        }
+
+
+        if(data['friendstatus'] == 'blocked'){
+            $scope.trustedHtml =  $sce.trustAsHtml('<b>blocked by searched person cannot send friend request</b>');
+        }else if(data['friendstatus'] == 'ownaccount'){
             $scope.trustedHtml =  $sce.trustAsHtml('<button ng-click="update_info()">update info</button>');
         }else if(data['friendstatus'] == 'friends'){
             $scope.trustedHtml =  $sce.trustAsHtml('<button ng-click="cancel_request()">unfriend</button>');
@@ -352,7 +365,6 @@ profile_page_info.controller("profile_page_info_cntrl",['$scope','$http','$sce',
             }else{
             alert("password doen't match")
             }
-
            }
 
         $scope.cancel_request = function(){
@@ -360,6 +372,22 @@ profile_page_info.controller("profile_page_info_cntrl",['$scope','$http','$sce',
                     .success(function(data,status,headers,config){
                          if(data == 1)
                             $scope.trustedHtml = $sce.trustAsHtml('<button ng-click="add_friend()">add friend</button>');
+                    })
+                }
+
+         $scope.block_person = function(){
+            $http.post('/theweber.in/block_person', { block_personid : selected_id })
+                    .success(function(data,status,headers,config){
+                         if(data == 1)
+                            $scope.trustedHtml1 = $sce.trustAsHtml('<button ng-click="unblock_person()">unblock selected friend</button>');
+                    })
+                }
+
+          $scope.unblock_person = function(){
+            $http.post('/theweber.in/unblock_person', { block_personid : selected_id })
+                    .success(function(data,status,headers,config){
+                         if(data == 1)
+                            $scope.trustedHtml1 = $sce.trustAsHtml('<button ng-click="block_person()">block selected friend</button>');
                     })
                 }
 
