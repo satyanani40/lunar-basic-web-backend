@@ -6,6 +6,7 @@
         <script src="{% static 'js/ng-upload.js' %}"></script>
         <script src="{% static 'js/angular-sanitize.js' %}"></script>
         <script src="{% static 'js/angularjscntrls.js' %}"></script>
+
         <!--<script src="{% static 'js/app.js' %}"></script>-->
         <!--<script src="{% static 'js/profilepage_cntrls.js' %}"></script>--
         >
@@ -18,7 +19,7 @@
   <script src="{{ STATIC_URL }}js/libs/eventsource.js"></script>
 
 
-
+<script src="{% static 'js/profile_controller.js' %}"></script>
 <!-- header include code -->
 <div ng-controller="header_inc_cntrl" ng-include="template.url">  </div>
 
@@ -26,20 +27,17 @@
 <!-- end of header include -->
 
 <br/><br/><br/><br/><br/>
-          <div  ng-controller="profile_page_info_cntrl" id="profile_page_cntrl_Id">
-                <div>logged user: {{ user.username }}</div>
-                <div>searched person ::  [[ searched_person ]]</div>
-              <div id="frnd_request_info">
-               <div dynamic="trustedHtml"></div>
-               <div dynamic="trustedHtml1"></div>
+<div  ng-app="profile_page_info" ng-controller="profile_page_info_cntrl" id="profile_page_cntrl_Id">
+    <div>logged user: {{ user.username }}</div>
+    <div>searched person ::  [[ searched_person ]]</div>
+    <div dynamic="trustedHtml"></div>
+    <div dynamic="trustedHtml1"></div>
+    <div id="frnd_request_info"></div>
 
-          </div>
+    <!--<b>Notifications</b>
+    <div ng-model="notifications"></div>-->
 
-        <div ng-repeat="temp in new_requests">
-            [[temp]]
-
-        </div>
-        </div>
+</div>
 
    </body>
 </html>

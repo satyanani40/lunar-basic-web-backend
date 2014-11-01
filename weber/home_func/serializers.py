@@ -16,14 +16,14 @@ class UserpostSerializer(MongoEngineModelSerializer):
     class Meta:
         model = Userpost
 
-class FriendsSerializer(MongoEngineModelSerializer):
-    class Meta:
-        model = Friends
 
 class Friends_newSerializer(MongoEngineModelSerializer):
     class Meta:
         model = Friends_new
 
+class user_picsSerializer(MongoEngineModelSerializer):
+    class Meta:
+        model = user_pics
 
 
 

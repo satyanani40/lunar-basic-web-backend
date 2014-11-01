@@ -16,8 +16,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
-from models import Friends,Postdetails
-from models import myfriends
+from models import Postdetails
 from django import template
 from django.core import serializers
 from django.core.serializers.json import DjangoJSONEncoder
@@ -387,9 +386,60 @@ def update_birthdate(request):
             status = 1
         return HttpResponse(status)
 
+@csrf_exempt
+def upload_profile_pic(request):
+    try:
+        if request.method == 'POST':
+
+            #data = json.loads(request.body)
+            #return  HttpResponse(request.FILES['file'])
+            #return HttpResponse(request.FILES['myFile'])
+            #form = DocumentForm(request.POST,request.FILES)
+            #if form.is_valid():
+
+            #store_postdata = json.loads(request.body)
+
+            #return HttpResponse(json.dumps('sdfdsfsd'))
+            user_pics.objects.create(owner=request.user.id,
+                                   images=request.FILES['profile_pic'])
+
+
+            #uploaded_pic = user_pics(docfile=request.FILES['file'])
+            #uploaded_pic.save()
+
+            #uploaded_pic = user_pics.objects.filter(docfile=uploaded_pic)
+            #data = uploaded_pic['docfile'].read()
+            #return HttpResponse(readed_imaged,content_type='image/jpeg')
+            #return HttpResponse("data:image/jpg;base64,%s" % data.encode('base64'))
+            #return HttpResponse("data:image/jpg;base64,%s" % data.encode('base64'))
+            return HttpResponse(1)
+
+    except Exception as e:
+        return HttpResponse(e)
+
+def get_userpic(request):
+    status = 0
+    if request.user.id is not None:
+        pics = user_pics.objects(owner=request.user.id)
+        if pics:
+            status = ''
+            for temp in pics:
+                 status = status+(temp.images).read()
+    return HttpResponse(status, content_type='image/jpeg')
+
+@csrf_exempt
+def loaded_userposts(request):
+    try:
+        data = Userpost.objects.filter().order_by('-publish_date').limit(10)
+        serialize_data = UserpostSerializer(data)
+        data =  json.dumps(serialize_data.data, cls=DjangoJSONEncoder)
+        return HttpResponse(data)
+    except Exception as e:
+        return HttpResponse(e)
+
 
 #==========new editing upto this mark
-def get_selected_user_info(request,username):
+"""def get_selected_user_info(request,username):
     f_status = 'addfriend'
     user_details = User.objects.get(username=username)
     friendslist = Friends.objects(friend1=request.user.id,myfriendslist__myfriends_ids=str(user_details.id))
@@ -441,15 +491,7 @@ def update_userinfo(request):
         return False
 
 
-@csrf_exempt
-def loaded_userposts(request):
-    try:
-        data = Userpost.objects.filter().order_by('-publish_date').limit(10)
-        serialize_data = UserpostSerializer(data)
-        data =  json.dumps(serialize_data.data, cls=DjangoJSONEncoder)
-        return HttpResponse(data)
-    except Exception as e:
-        return HttpResponse(e)
+
 
 def savepost(request):
 
@@ -463,28 +505,4 @@ def savepost(request):
         else:
             return render(request,'savepost.html',{})
 
-@csrf_exempt
-def upload_profile_pic(request):
-    try:
-        if request.method == 'POST':
-
-            #data = json.loads(request.body)
-            #return  HttpResponse(request.FILES['file'])
-            #return HttpResponse(request.FILES['myFile'])
-            #form = DocumentForm(request.POST,request.FILES)
-            #if form.is_valid():
-
-            #store_postdata = json.loads(request.body)
-
-            #return HttpResponse(json.dumps('sdfdsfsd'))
-            uploaded_pic = user_pics(docfile=request.FILES['file'])
-            uploaded_pic.save()
-
-            #uploaded_pic = user_pics.objects.filter(docfile=uploaded_pic)
-            data = uploaded_pic['docfile'].read()
-            #return HttpResponse(readed_imaged,content_type='image/jpeg')
-            #return HttpResponse("data:image/jpg;base64,%s" % data.encode('base64'))
-            return HttpResponse("data:image/jpg;base64,%s" % data.encode('base64'))
-
-    except Exception as e:
-        return HttpResponse(e)
+"""

@@ -17,17 +17,16 @@
 <!-- header include code -->
 <div ng-controller="header_inc_cntrl" ng-include="template.url"></div>
 
-<!-- <form method="post" action="/theweber.in/upload_profile_pic" enctype="multipart/form-data">
-    <input type="file" name="myfile">
+ <form method="post" action="/theweber.in/upload_profile_pic" enctype="multipart/form-data">
+    <input type="file" name="profile_pic">
     <input type="submit" value="submit">
-
-</form>-->
+</form>
 
 <br>
         <br>
         <br>
         <br>
-
+<a href="/theweber.in/get_userpic">get pic</a>
     <div class="container-fluid">
         <div class="span6">
             <div class="row-fluid">
@@ -100,7 +99,8 @@
                             </a>
                             <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
                                   <li><a tabindex="-1" href="#">Unfollow Post</a></li>
-                                  <li><a tabindex="-1" href="#">Delete This Post</a></li>
+                                  <li><a tabindex="-1" href="#" ng-click="alert('sdfsdf')">Delete This Post</a></li>
+
                                   <li><a tabindex="-1" href="#">Remove This Post</a></li>
                             </ul>
                           </div>

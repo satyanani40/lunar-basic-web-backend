@@ -22,7 +22,10 @@ urlpatterns = patterns('',
     url(r'^deletepost','home_func.views.delete_post'),
     url(r'^loaded_userposts','home_func.views.loaded_userposts'),
     url(r'^savepost','home_func.views.savepost'),
+
     url(r'^upload_profile_pic','home_func.views.upload_profile_pic'),
+    url(r'^get_userpic','home_func.views.get_userpic'),
+
     url(r'^frnd_notifications','home_func.views.frnd_notifications'),
     url(r'^accept_friend','home_func.views.accept_friend'),
     url(r'^change_password','home_func.views.change_password'),

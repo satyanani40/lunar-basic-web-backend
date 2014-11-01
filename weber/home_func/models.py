@@ -17,28 +17,28 @@ class Userpost(Document):
     username = StringField(max_length=120,required=True)
     permission_type=IntField()
     userid = ReferenceField(User)
-
-
-
     #auto_id = IntField(required=True)
     #user_id = StringField(max_length=200)
-class myfriends(EmbeddedDocument):
-    myfriends_ids = StringField()
-    status = StringField()
 
-class Friends(Document):
+
+
+class user_pics(Document):
+    owner = ReferenceField(User)
+    images =FileField()
+    activate_image = BooleanField()
+
+
+""""class Friends(Document):
     friend1 = ReferenceField(User)
     myfriendslist = ListField(EmbeddedDocumentField(myfriends))
     #permission_type=StringField(max_length=120,required=True)
     #auto_id = IntField(required=True)
-    #user_id = StringField(max_length=200)
+    #user_id = StringField(max_length=200)"""
 
 class Postdetails(Document):
     postname = StringField()
     postdate = DateTimeField()
 
-class user_pics(Document):
-    docfile = FileField()
 
 class Friends_new(Document):
     sender_frnd = ReferenceField(User)
